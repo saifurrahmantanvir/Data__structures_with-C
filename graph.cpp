@@ -35,14 +35,13 @@ int main()
   int n, m; cin >> n >> m;
 
   int x, y;
-  
+
   for(int i=0; i<m; i++) {
     cin >> x >> y;
 
     adz[x].pb(y); adz[y].pb(x);
   }
 
-  bfs(1);
   dfs(1);
 
   return 0;
@@ -91,5 +90,20 @@ void bfs(int node) {
 }
 
 void dfs(int node) {
+  visited[node] = true;
+  cout << node << " ";
 
+  vector<int>::iterator it;
+
+  for(it=adz[node].begin(); it != adz[node].end(); it++) {
+    if(!visited[*it]) {
+      dfs(*it);
+    }
+
+
+  }
+
+
+  /* POST-ORDER_
+  cout << node << " "; */
 }

@@ -67,15 +67,36 @@ private:
   }
 
   int query(int node, int start, int end, int L, int R) {
+    /**
+     * @brief range represented by a node is completely outside the given range
+     * 
+     * ( L....R < start....end ) | ( start....end < L....R )
+     * 
+     * 
+     * 
+     */
     if (R < start || end < L) {
-      // range represented by a node is completely outside the given range
       return 0;
     }
+    /**
+     * @brief range represented by a node is completely inside the given range
+     * 
+     * ( L.. <= start.. && ..end <= ..R )
+     * 
+     * 
+     * 
+     */
     if (L <= start && end <= R) {
-      // range represented by a node is completely inside the given range
       return tree[node];
     }
-    // range represented by a node is partially inside and partially outside the given range
+    /**
+     * @brief range represented by a node is partially inside and partially outside the given range
+     * 
+     * ( L.. start.. ..R ..end ) | ( start.. L.. ..end ..R )
+     * 
+     * 
+     * 
+     */
     int mid = (start + end) / 2;
 
     int left_sum = query(2 * node, start, mid, L, R);

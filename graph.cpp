@@ -23,7 +23,7 @@ void print(int x) { cout << x << endl; }
 const int _n = 1e5+2;
 
 vector<bool> visited(_n, false);
-vector<int> adz[_n];
+vector<int> grap_[_n];
 
 void bfs(int node);
 void dfs(int node);
@@ -39,7 +39,7 @@ int main()
   for(int i=0; i<m; i++) {
     cin >> x >> y;
 
-    adz[x].pb(y); adz[y].pb(x);
+    grap_[x].push_back(y); grap_[y].push_back(x);
   }
 
   dfs(1);
@@ -71,7 +71,7 @@ void bfs(int node) {
 
     } */
 
-    for(auto it : adz[node]) {
+    for(auto it : grap_[node]) {
       if(!visited[it]) {
         visited[it] = true;
         q.push(it);
@@ -95,7 +95,7 @@ void dfs(int node) {
 
   vector<int>::iterator it;
 
-  for(it=adz[node].begin(); it != adz[node].end(); it++) {
+  for(it=grap_[node].begin(); it != grap_[node].end(); it++) {
     if(!visited[*it]) {
       dfs(*it);
     }

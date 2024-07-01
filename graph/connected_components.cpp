@@ -42,15 +42,49 @@ void writeln(const vector<T> &v, T_ n) {
 template<class T, class T_>
 void writeln(const pair<T, T_>p) { cout << p.first << ' ' << p.second << '\n'; }
 
-void solve() { }
+const int n = 1e3+10;
+
+vector<int> grap_[n];
+vector<bool> visited(n, false);
+
+vector<vector<int>> connComponents;
+vector<int> cConnComponent;
+
+void dfs(int node) {
+  visited[node] = true;
+  cConnComponent.push_back(node);
+
+  for(int child : grap_[node]) if(!visited[child]) dfs(child);
+}
 
 int main() {
   _ios;
 
-  test(solve);
+  int n, e; readln(n, e);
 
+  for(int i = 0; i < e; i++) {
+    int a, b; readln(a, b);
 
+    grap_[a].push_back(b); grap_[b].push_back(a);
+  }
 
+  int cnt = 0;
+
+  for(int i = 1; i <= n; i++) {
+    if(!visited[i]) {
+      cConnComponent.clear();
+      dfs(i);
+      cnt++;
+      connComponents.push_back(cConnComponent);
+    }
+  }
+
+  writeln(cnt);
+
+  for(auto v : connComponents) {
+    for(auto c : v) cout << c << " ";
+    cout << endl;
+  }
 
   return 0;
 }

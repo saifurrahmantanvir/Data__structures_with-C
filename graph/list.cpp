@@ -45,6 +45,23 @@ void writeln(const pair<T, T_>p) { cout << p.first << ' ' << p.second << '\n'; }
 const int n = 1e3+10;
 
 vector<int> grap_[n];
+vector<bool> visited(n, false);
+
+void dfs(int node) {
+  visited[node] = true;
+  cout << node << endl;
+
+  for(int child : grap_[node]) {
+    cout << "parent: " << node << ", child: " << child << endl;
+    if(!visited[child]) {
+      dfs(child);
+
+    }
+
+  }
+
+
+}
 
 // Space complexity O(V+E)
 int main() {
@@ -57,6 +74,8 @@ int main() {
 
     grap_[a].push_back(b); grap_[b].push_back(a);
   }
+
+  dfs(1);
 
   return 0;
 }

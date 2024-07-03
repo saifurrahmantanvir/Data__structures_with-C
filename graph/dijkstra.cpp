@@ -42,19 +42,72 @@ void writeln(const vector<T> &v, T_ n) {
 template<class T, class T_>
 void writeln(const pair<T, T_>p) { cout << p.first << ' ' << p.second << '\n'; }
 
-#ifndef ONLINE_JUDGE
-#define debug(x...) cerr << "[" << #x << "] = "; writeln(x)
-#else
-#define debug(x...)
-#endif
+const ll n = 1e5+10;
+const ll inf = 1e18+10;
 
-void solve() { }
+vector<pair<ll, ll>> g[n];
 
-int main() {
+vector<ll> dist(n, inf);
+vector<bool> visited(n, false);
+
+// Time complexity O(V+Elog(V))
+void dijkstra(ll source) {
+  set<pair<ll, ll>> s;
+
+  s.insert({ 0, source });
+  dist[source] = 0;
+
+  while(s.size()) {
+    pair<ll, ll> p = *s.begin();
+    ll _vdist = p.first, v = p.second;
+    s.erase(s.begin());
+
+    if(visited[v]) continue;
+    visited[v] = true;
+
+    for(auto child : g[v]) {
+      ll c = child.first, cdist = child.second;
+
+      /* if (dist[c] > dist[v] + cdist) {
+        dist[c] = dist[v] + cdist;
+
+        s.insert({ dist[c], c });
+      } */
+
+      if (dist[c] > _vdist + cdist) {
+        dist[c] = _vdist + cdist;
+
+        s.insert({ dist[c], c });
+      }
+
+    }
+
+
+  }
+
+
+}
+
+void solve() {
+  int n, m; readln(n, m);
+
+  for(int i = 0; i < m; i++) {
+    ll x, y, w;
+    readln(x, y, w);
+
+    g[x].push_back({ y, w });
+  }
+
+  dijkstra(1);
+
+  for(int i = 1; i <= n; i++) cout << dist[i] << " ";
+}
+
+int main()
+{
   _ios;
 
-  test(solve);
-
+  solve();
 
 
 

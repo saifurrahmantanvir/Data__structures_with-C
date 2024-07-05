@@ -44,75 +44,70 @@ void writeln(const pair<T, T_>p) { cout << p.first << ' ' << p.second << '\n'; }
 
 const int n = 1e3+10;
 
-vector<int> grap_[n];
-vector<bool> visited(n, false);
+vector<int> g[n];
+int parents[n];
 
-void dfs(int node) {
-  visited[node] = true;
-  cout << node << endl;
+void dfs(int node, int parent = -1) {
+  parents[node] = parent;
 
-  for(int child : grap_[node]) {
-    cout << "parent: " << node << ", child: " << child << endl;
-    if(!visited[child]) {
-      dfs(child);
-
-    }
+  for(int c : g[node]) {
+    if(c == parent) continue;
+    dfs(c, node);
 
   }
 
 
 }
 
-int level[n];
+vector<int> path(int node) {
+  vector<int> ans;
 
-void bfs(int node) {
-  queue<int> q;
-
-  visited[node] = true;
-  q.push(node);
-
-  while(!q.empty()) {
-    int node = q.front();
-    q.pop();
-
-    cout << node << " ";
-
-    for(auto child : grap_[node]) {
-      if(!visited[child]) {
-        visited[child] = true;
-        q.push(child);
-
-        level[child] = level[node] + 1;    
-      }
-
-
-    }
-
-
+  while(node != -1) {
+    ans.pb(node);
+    node = parents[node];
   }
 
+  reverse(ans.begin(), ans.end());
 
-  cout << endl;
+  return ans;
 }
 
-/**
- * Space complexity O(V+E)
- * 
- */
-int main() {
-  _ios;
-
+void solve() {
   int n; readln(n);
 
   for(int i = 0; i < n-1; i++) {
-    int a, b; readln(a, b);
+    int a, b;
+    readln(a, b);
 
-    grap_[a].push_back(b); grap_[b].push_back(a);
+    g[a].push_back(b); g[b].push_back(a);
   }
 
-  bfs(1);
+  dfs(1);
 
-  cout << level[6] << endl;
+  int x, y; readln(x, y);
+
+  vector<int> pathX = path(x), pathY = path(y);
+
+  int minLen = min(pathX.size(), pathY.size());
+  int lca = -1;
+
+  for(int i = 0; i < minLen; i++) {
+    if(pathX[i] == pathY[i]) {
+      lca = pathX[i];
+    }
+    else break;
+
+  }
+
+  cout << lca << endl;
+}
+
+int main() {
+  _ios;
+
+  solve();
+
+
 
   return 0;
 }
